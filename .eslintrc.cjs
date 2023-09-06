@@ -4,23 +4,50 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended-type-checked',
-    'plugin:@typescript-eslint/stylistic-type-checked',
+    'plugin:react-hooks/recommended',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
-    'plugin:react-hooks/recommended',
     'prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', '@typescript-eslint', 'import'],
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: ['./tsconfig.json', './tsconfig.node.json'],
+        tsconfigRootDir: __dirname,
+      },
+    },
+  ],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
     ],
+    '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
+    'import/order': [
+      'warn',
+      {
+        'newlines-between': 'always',
+        groups: [
+          ['builtin', 'external'],
+          ['internal'],
+          ['parent', 'sibling'],
+          ['index', 'object', 'type'],
+        ],
+        pathGroups: [
+          { pattern: 'react', group: 'builtin', position: 'before' },
+          { pattern: 'components', group: 'internal' },
+        ],
+        pathGroupsExcludedImportTypes: ['react'],
+        alphabetize: {
+          order: 'asc',
+        },
+      },
+    ],
   },
-  ecmaVersion: 'latest',
-  sourceType: 'module',
-  project: ['./tsconfig.json', './tsconfig.node.json'],
-  tsconfigRootDir: __dirname,
 };

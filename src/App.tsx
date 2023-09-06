@@ -1,7 +1,9 @@
 import { useState, useRef } from 'react';
+
+import { Preview } from 'components/Preview';
 import { Button } from 'components/tokens/Button';
 import { DragDrop } from 'components/tokens/DragDrop';
-import { Preview } from 'components/Preview';
+
 import './App.css';
 
 function App() {

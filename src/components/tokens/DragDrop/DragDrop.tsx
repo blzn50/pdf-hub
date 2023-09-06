@@ -22,3 +22,5 @@ export const DragDrop = forwardRef<HTMLInputElement, DragDropProps>(
     );
   },
 );
+
+DragDrop.displayName = 'DragDrop';
