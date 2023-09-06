@@ -1,0 +1,53 @@
+.pdf-merge {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin: 16px;
+}
+
+.drag-drop label {
+  height: auto;
+  font-size: 14px;
+  border: 1px ridge #ddeff1;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.drag-drop label:hover,
+.drag-drop label:active {
+  background-color: #adf7f7;
+  color: #ce1f0d;
+  border-color: #ce1f0d;
+}
+
+.drag-drop input {
+  opacity: 0;
+}
+
+.pdf-merge .merge-btn {
+  width: 200px;
+  height: 30px;
+  font-size: 14px;
+}
+
+.preview-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  padding: 8px;
+  width: 700px;
+  min-height: 100px;
+}
+
+.preview-container > .no-file {
+  align-self: center;
+}
+
+.preview-container ul {
+  list-style-type: none;
+  padding: 0;
+}
