@@ -61,22 +61,109 @@
 .preview-container {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  padding: 8px;
-  width: 700px;
-  min-height: 100px;
-}
-
-.preview-container ul {
-  list-style-type: none;
-  padding: 0;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  padding: 16px;
 }
 
 .preview-container .add-btn-container {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.dropzone-container {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  border: 2px dashed purple;
+  border-radius: 4px;
+  padding: 60px;
+  transition: border 0.15s ease-in-out;
+  text-align: center;
+  width: 80%;
+  margin: auto;
+}
+
+.dropzone-container.dropzone-container-accept {
+  border-color: rgb(0, 128, 6);
+}
+
+.dropzone-container.dropzone-container-reject {
+  border-color: rgb(190, 1, 1);
+}
+
+.dropzone-content {
+  font-size: 20px;
+}
+
+.document-container {
+  margin: 1em 0;
+}
+
+.document-container .react-pdf__Document {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.document-container .react-pdf__Page {
+  max-width: 60%;
+  min-width: 10em;
+  box-shadow: 0px 0px 16px rgba(234, 234, 234, 0.5);
+}
+
+.document-container .react-pdf__Page canvas {
+  max-width: 100%;
+  height: auto !important;
+}
+
+.document-container .document-label {
+  text-align: center;
+  font-size: 14px;
+}
+
+@media (width <= 1024px) {
+  .document-container .react-pdf__Page {
+    max-width: calc(100% - 4em);
+  }
+}
+
+@media (width <= 620px) {
+  .dropzone-container {
+    padding: 24px;
+  }
+
+  .dropzone-content {
+    font-size: 16px;
+  }
+}
+
+@media (1025px <= width <= 1440px) {
+  .preview-container {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (751px <= width <= 1024px) {
+  .preview-container {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (400px <= width <= 750px) {
+  .preview-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (width < 400px) {
+  .preview-container {
+    grid-template-columns: repeat(1, 1fr);
+    gap: 16px;
+  }
 }

@@ -1,71 +1,41 @@
-import { forwardRef, DragEvent } from 'react';
+import { FC } from 'react';
 
-import { DragDrop, DragDropProps } from 'components/tokens/DragDrop';
+import { Document, Page } from 'react-pdf';
+
+import type { PDFDocumentProxy } from 'pdfjs-dist';
+
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+import 'react-pdf/dist/esm/Page/TextLayer.css';
 
 type PreviewProps = {
   files: File[];
-  onRemoveFile?: (fileName: string, fileIndex: number) => void;
-  onDragFileStart: (e: DragEvent, fileIndex: number) => void;
-  onDragEnd: (e: DragEvent) => void;
-} & Omit<DragDropProps, 'label' | 'type'>;
+};
 
-export const Preview = forwardRef<HTMLInputElement, PreviewProps>(
-  (
-    {
-      files,
-      onChange,
-      onDrop,
-      onDragEnter,
-      onDragOver,
-      onRemoveFile,
-      onDragFileStart,
-      onDragEnd,
-    },
-    ref,
-  ) => {
-    return files.length === 0 ? (
-      <div className="empty-preview-container">
-        <DragDrop
-          ref={ref}
-          onChange={onChange}
-          onDragEnter={onDragEnter}
-          onDragOver={onDragOver}
-          onDrop={onDrop}
-          type="inline"
-          label="Drop files here or click to browse them."
-        />
-      </div>
-    ) : (
-      <div className="preview-container">
-        <ul onDragOver={onDragOver}>
-          {files.map((file, fileIndex) => (
-            <li
-              key={file.name + fileIndex}
-              draggable
-              onDragStart={(e) => onDragFileStart(e, fileIndex)}
-              onDragEnd={onDragEnd}
-            >
-              <span>{file.name}</span>
-              <button onClick={() => onRemoveFile?.(file.name, fileIndex)}>
-                &#x274C;
-              </button>
-            </li>
-          ))}
-        </ul>
-        <div className="add-btn-container">
-          <DragDrop
-            ref={ref}
-            onChange={onChange}
-            onDragEnter={onDragEnter}
-            onDragOver={onDragOver}
-            onDrop={onDrop}
-            type="round"
-            label="Add document"
-          />
+const options = {
+  cMapUrl: '/cmaps/',
+  standardFontDataUrl: '/standard_fonts/',
+};
+
+export const Preview: FC<PreviewProps> = ({ files }) => {
+  console.log({ files });
+  return (
+    <div className="preview-container">
+      {files.map((file, i) => (
+        <div key={i} className="document-container">
+          <Document
+            file={file}
+            options={options}
+            loading={<div className="react-pdf__Page">Loading PDF...</div>}
+          >
+            <Page
+              pageIndex={0}
+              renderTextLayer={false}
+              renderAnnotationLayer={false}
+            ></Page>
+            <p className="document-label">{file.name}</p>
+          </Document>
         </div>
-      </div>
-    );
-  },
-);
-
-Preview.displayName = 'Preview';
+      ))}
+    </div>
+  );
+};
