@@ -29,21 +29,33 @@ module.exports = {
       { allowConstantExport: true },
     ],
     '@typescript-eslint/consistent-type-definitions': ['warn', 'type'],
+    'sort-imports': [
+      'warn',
+      {
+        ignoreCase: true,
+        ignoreDeclarationSort: true,
+      },
+    ],
     'import/order': [
       'warn',
       {
         'newlines-between': 'always',
         groups: [
-          ['builtin', 'external'],
-          ['internal'],
+          'builtin',
+          'external',
+          'internal',
           ['parent', 'sibling'],
-          ['index', 'object', 'type'],
+          'index',
+          'object',
+          'type',
         ],
         pathGroups: [
           { pattern: 'react', group: 'builtin', position: 'before' },
-          { pattern: 'components', group: 'internal' },
+          { pattern: 'components/**', group: 'internal' },
+          { pattern: 'helpers/**', group: 'internal', position: 'after' },
+          { pattern: 'types/**', group: 'internal', position: 'after' },
         ],
-        pathGroupsExcludedImportTypes: ['react'],
+        pathGroupsExcludedImportTypes: ['react', 'internal'],
         alphabetize: {
           order: 'asc',
         },
