@@ -50,7 +50,7 @@ module.exports = {
           'type',
         ],
         pathGroups: [
-          { pattern: 'react', group: 'builtin', position: 'before' },
+          { pattern: 'react+(|-dom)', group: 'builtin', position: 'before' },
           { pattern: 'components/**', group: 'internal' },
           { pattern: 'helpers/**', group: 'internal', position: 'after' },
           { pattern: 'types/**', group: 'internal', position: 'after' },
