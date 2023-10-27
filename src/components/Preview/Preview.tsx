@@ -10,16 +10,17 @@ import { SortableItem } from './SortableItem';
 
 type PreviewProps = {
   files: CustomFile[];
+  onFileRemove?: (id: string) => void;
 };
 
-export const Preview: FC<PreviewProps> = ({ files }) => {
+export const Preview: FC<PreviewProps> = ({ files, onFileRemove }) => {
   const fileIds = useMemo(() => files.map((file) => file.id), [files]);
 
   return (
     <SortableContext items={fileIds}>
       <div className="preview-container">
         {files.map((file) => (
-          <SortableItem file={file} key={file.id} />
+          <SortableItem file={file} key={file.id} onFileRemove={onFileRemove} />
         ))}
       </div>
     </SortableContext>

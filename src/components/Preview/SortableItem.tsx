@@ -1,6 +1,10 @@
 import { CSSProperties, FC } from 'react';
 
-import { useSortable } from '@dnd-kit/sortable';
+import {
+  AnimateLayoutChanges,
+  defaultAnimateLayoutChanges,
+  useSortable,
+} from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 import { CustomFile } from 'types/CustomFile';
@@ -9,9 +13,17 @@ import { PDFItem } from './PDFItem';
 
 type SortableItemProps = {
   file: CustomFile;
+  onFileRemove?: (id: string) => void;
 };
 
-export const SortableItem: FC<SortableItemProps> = ({ file }) => {
+const customAnimateLayoutChanges: AnimateLayoutChanges = (args) => {
+  if (args.isSorting || args.wasDragging) {
+    return defaultAnimateLayoutChanges(args);
+  }
+  return true;
+};
+
+export const SortableItem: FC<SortableItemProps> = ({ file, onFileRemove }) => {
   const {
     attributes,
     isDragging,
@@ -21,6 +33,11 @@ export const SortableItem: FC<SortableItemProps> = ({ file }) => {
     transition,
   } = useSortable({
     id: file.id,
+    animateLayoutChanges: customAnimateLayoutChanges,
+    transition: {
+      duration: 400,
+      easing: 'ease',
+    },
   });
 
   const animation: CSSProperties = {
@@ -36,6 +53,7 @@ export const SortableItem: FC<SortableItemProps> = ({ file }) => {
       style={animation}
       file={file.file}
       isDragging={isDragging}
+      onFileRemove={() => onFileRemove?.(file.id)}
       {...attributes}
       {...listeners}
     />

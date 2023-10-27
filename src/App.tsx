@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import {
   DndContext,
   DragEndEvent,
+  MeasuringStrategy,
   PointerSensor,
   useSensor,
   useSensors,
@@ -26,9 +27,21 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
   import.meta.url,
 ).toString();
 
+const measuringStrategy = {
+  droppable: {
+    strategy: MeasuringStrategy.Always,
+  },
+};
+
 function App() {
   const [files, setFiles] = useState<CustomFile[]>([]);
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 5,
+      },
+    }),
+  );
 
   const handleDragToDrop = useCallback((acceptedFiles: File[]) => {
     setFiles((prevFiles) => [
@@ -55,6 +68,10 @@ function App() {
     [files],
   );
 
+  const handleRemoveFile = (idToRemove: string) => {
+    setFiles((oldFiles) => oldFiles.filter((file) => file.id !== idToRemove));
+  };
+
   return (
     <main className="pdf-merge">
       <h2 style={{ textAlign: 'center' }}>Merge PDF</h2>
@@ -62,13 +79,17 @@ function App() {
         onDrop={handleDragToDrop}
         accept={{ 'application/pdf': ['.pdf'] }}
       />
-      <DndContext
-        onDragEnd={handleRearrangeFiles}
-        sensors={sensors}
-        modifiers={[restrictToWindowEdges]}
-      >
-        <Preview files={files} />
-      </DndContext>
+
+      <section className="files-manipulation__container">
+        <DndContext
+          onDragEnd={handleRearrangeFiles}
+          sensors={sensors}
+          modifiers={[restrictToWindowEdges]}
+          measuring={measuringStrategy}
+        >
+          <Preview files={files} onFileRemove={handleRemoveFile} />
+        </DndContext>
+      </section>
       {/* <Button className="merge-btn">Add files to merge</Button> */}
     </main>
   );
