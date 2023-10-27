@@ -1,41 +1,27 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 
-import { Document, Page } from 'react-pdf';
-
-import type { PDFDocumentProxy } from 'pdfjs-dist';
-
+import { SortableContext } from '@dnd-kit/sortable';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
-type PreviewProps = {
-  files: File[];
-};
+import { CustomFile } from 'types/CustomFile';
 
-const options = {
-  cMapUrl: '/cmaps/',
-  standardFontDataUrl: '/standard_fonts/',
+import { SortableItem } from './SortableItem';
+
+type PreviewProps = {
+  files: CustomFile[];
 };
 
 export const Preview: FC<PreviewProps> = ({ files }) => {
-  console.log({ files });
+  const fileIds = useMemo(() => files.map((file) => file.id), [files]);
+
   return (
-    <div className="preview-container">
-      {files.map((file, i) => (
-        <div key={i} className="document-container">
-          <Document
-            file={file}
-            options={options}
-            loading={<div className="react-pdf__Page">Loading PDF...</div>}
-          >
-            <Page
-              pageIndex={0}
-              renderTextLayer={false}
-              renderAnnotationLayer={false}
-            ></Page>
-            <p className="document-label">{file.name}</p>
-          </Document>
-        </div>
-      ))}
-    </div>
+    <SortableContext items={fileIds}>
+      <div className="preview-container">
+        {files.map((file) => (
+          <SortableItem file={file} key={file.id} />
+        ))}
+      </div>
+    </SortableContext>
   );
 };

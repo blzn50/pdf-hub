@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { useDropzone, FileRejection, DropEvent, Accept } from 'react-dropzone';
+import { Accept, DropEvent, FileRejection, useDropzone } from 'react-dropzone';
 
 type DropzoneProps = {
   accept?: Accept;

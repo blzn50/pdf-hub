@@ -1,10 +1,10 @@
 import { createRequire } from 'node:module';
 import path from 'node:path';
-import react from '@vitejs/plugin-react';
 
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 const require = createRequire(import.meta.url);
 const cMapsDir = path.join(
