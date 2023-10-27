@@ -54,6 +54,7 @@ module.exports = {
           { pattern: 'components/**', group: 'internal' },
           { pattern: 'helpers/**', group: 'internal', position: 'after' },
           { pattern: 'types/**', group: 'internal', position: 'after' },
+          { pattern: 'assets/**', group: 'internal', position: 'after' },
         ],
         pathGroupsExcludedImportTypes: ['react', 'internal'],
         alphabetize: {
