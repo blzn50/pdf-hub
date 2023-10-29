@@ -1,11 +1,6 @@
-import { FC, CSSProperties } from 'react';
+import { ButtonHTMLAttributes, FC } from 'react';
 
-type ButtonProps = {
-  children?: React.ReactNode;
-  onClick?: () => void;
-  style?: CSSProperties;
-  className?: string;
-};
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button: FC<ButtonProps> = ({ children, ...props }) => {
   return <button {...props}>{children}</button>;
