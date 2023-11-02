@@ -2,8 +2,11 @@ import { FC } from 'react';
 
 import { Accept, DropEvent, FileRejection, useDropzone } from 'react-dropzone';
 
+import plus from 'assets/plus.svg';
+
 type DropzoneProps = {
   accept?: Accept;
+  withinFiles?: boolean;
   onDrop?: <T extends File>(
     acceptedFiles: T[],
     fileRejections: FileRejection[],
@@ -11,7 +14,11 @@ type DropzoneProps = {
   ) => void;
 };
 
-export const Dropzone: FC<DropzoneProps> = ({ accept, onDrop }) => {
+export const Dropzone: FC<DropzoneProps> = ({
+  accept,
+  withinFiles = false,
+  onDrop,
+}) => {
   const { getRootProps, getInputProps, isDragAccept, isDragReject } =
     useDropzone({
       onDrop,
@@ -19,7 +26,17 @@ export const Dropzone: FC<DropzoneProps> = ({ accept, onDrop }) => {
     });
   const status = isDragAccept ? 'accept' : isDragReject ? 'reject' : '';
 
-  return (
+  return withinFiles ? (
+    <div className="dropzone-button">
+      <label id="dropzone-label" htmlFor="add-file" {...getRootProps()}>
+        <div>
+          <img src={plus} alt="add document" />
+          <span>Add document</span>
+        </div>
+      </label>
+      <input id="add-file" {...getInputProps()} />
+    </div>
+  ) : (
     <div
       className={getClassName('dropzone-container', status)}
       {...getRootProps()}
