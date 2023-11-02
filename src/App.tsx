@@ -118,11 +118,13 @@ function App() {
 
   return (
     <main className="pdf-merge">
-      <h2 style={{ textAlign: 'center' }}>Merge PDF</h2>
-      <Dropzone
-        onDrop={handleDragToDrop}
-        accept={{ 'application/pdf': ['.pdf'] }}
-      />
+      <h1 style={{ textAlign: 'center' }}>Merge PDF</h1>
+      {files.length === 0 && (
+        <Dropzone
+          onDrop={handleDragToDrop}
+          accept={{ 'application/pdf': ['.pdf'] }}
+        />
+      )}
       {!!files.length && (
         <>
           <section className="files-manipulation__container">
@@ -132,7 +134,13 @@ function App() {
               modifiers={[restrictToWindowEdges]}
               measuring={measuringStrategy}
             >
-              <Preview files={files} onFileRemove={handleRemoveFile} />
+              <Preview files={files} onFileRemove={handleRemoveFile}>
+                <Dropzone
+                  withinFiles
+                  accept={{ 'application/pdf': ['.pdf'] }}
+                  onDrop={handleDragToDrop}
+                />
+              </Preview>
             </DndContext>
           </section>
 

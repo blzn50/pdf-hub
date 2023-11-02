@@ -7,7 +7,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-import { CustomFile } from 'types/CustomFile';
+import { CustomFile } from 'types';
 
 import { PDFItem } from './PDFItem';
 

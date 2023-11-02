@@ -40,7 +40,9 @@ export const PDFItem = forwardRef<HTMLDivElement, PDFItemProps>(
               renderTextLayer={false}
               renderAnnotationLayer={false}
             ></Page>
-            <p className="document-label">{file?.name}</p>
+            <div className="document-label">
+              <p>{file?.name}</p>
+            </div>
           </Document>
           <div className="actions-container">
             <button onClick={onFileRemove}>
