@@ -1,3 +1,7 @@
+:root {
+  --document-box-shadow: 0px 8px 50px -10px rgb(102, 85, 85);
+}
+
 @keyframes pop {
   0% {
     transform: scale(1);
@@ -16,44 +20,53 @@
   margin: 16px;
 }
 
-.drag-drop.inline label {
-  font-size: 30px;
+.dropzone-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  min-height: 200px;
-  width: 100%;
-}
+  width: 15vw;
+  height: auto;
+  transition: 300ms;
 
-.drag-drop.round {
-  display: flex;
-}
+  > #dropzone-label {
+    background-color: #316797;
+    color: white;
+    padding: 5vw;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 300ms ease-in;
+    transition-property: transform, box-shadow;
+    box-shadow: var(--document-box-shadow);
+    position: relative;
 
-.drag-drop.round label {
-  height: 60px;
-  position: relative;
-  font-size: 16px;
-  border: 1px ridge #ddeff1;
-  border-radius: 50px;
-  padding: 16px;
-  cursor: pointer;
-  width: 60px;
-  text-align: center;
-}
+    &:hover {
+      transform: translateY(0.5vw);
+      box-shadow:
+        0 0 0 1px rgba(63, 63, 68, 0.05),
+        0px 15px 15px 0 rgba(34, 33, 81, 0.25);
+    }
 
-.drag-drop.round label:hover,
-.drag-drop.round label:active {
-  background-color: #adf7f7;
-  color: #ce1f0d;
-  border-color: #ce1f0d;
-}
+    > div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: absolute;
+      left: 50%;
+      top: 44%;
+      transform: translate(-50%, -50%);
 
-.drag-drop input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+      img {
+        width: 3em;
+        height: 3em;
+      }
+
+      span {
+        line-height: 120%;
+        font-size: 24px;
+      }
+    }
+  }
 }
 
 .dropzone-container {
@@ -89,13 +102,6 @@
   position: relative;
 }
 
-.empty-preview-container {
-  position: relative;
-  margin: 20px;
-  max-width: 1400px;
-  height: 100%;
-}
-
 .preview-container {
   position: relative;
   display: flex;
@@ -103,6 +109,8 @@
   flex-wrap: wrap;
   gap: 24px;
   padding: 16px;
+  border-radius: 12px;
+  background-color: #c5dfdf;
 }
 
 .preview-container .add-btn-container {
@@ -119,16 +127,15 @@
   touch-action: none;
   width: 15vw;
   height: auto;
+  padding: 1.5em;
 
   .react-pdf__Document {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 1.5em;
+    box-shadow: var(--document-box-shadow);
 
     .react-pdf__Page {
-      box-shadow: 0px 0px 16px rgba(234, 234, 234, 0.5);
-
       canvas {
         max-width: 100%;
         height: auto !important;
@@ -136,15 +143,19 @@
     }
 
     .document-label {
-      height: auto;
-      margin: 0;
-      padding: 1em;
+      background-color: rgb(202, 202, 202);
+      width: 100%;
+      padding: 1em 0;
       text-align: center;
-      font-size: 14px;
       display: flex;
       justify-content: center;
-      word-break: break-all;
-      padding-bottom: 0;
+      word-break: break-word;
+      word-wrap: break-word;
+      > p {
+        font-size: 14px;
+        margin: 0;
+        padding: 0 8px;
+      }
     }
   }
 
@@ -232,7 +243,6 @@
 
   .disabled-btn {
     pointer-events: none;
-    /* cursor: default; */
     background-color: #f4e3c2;
     color: #c1c1c1;
   }
@@ -248,7 +258,7 @@
   }
 }
 
-@media (1024px <= width <= 1440px) {
+@media (1024px < width <= 1440px) {
   .files-manipulation__container {
     max-width: 1200px;
   }
@@ -256,11 +266,68 @@
   .preview-container {
     gap: 16px;
   }
+
+  .dropzone-button {
+    > #dropzone-label {
+      > div {
+        top: 42%;
+
+        img {
+          height: 2em;
+          width: 2em;
+        }
+
+        span {
+          font-size: 16px;
+        }
+      }
+    }
+  }
 }
 
-@media (768px <= width < 1024px) {
+@media (768px <= width <= 1024px) {
   .files-manipulation__container {
     max-width: 900px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .preview-container {
+    border: 3px dashed #316797;
+    border-radius: 0;
+    gap: 8px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  .document-container,
+  .dropzone-button {
+    width: 25vw;
+  }
+
+  .document-container {
+    padding: 1em;
+
+    .actions-container {
+      left: 1em;
+      top: 1em;
+      width: 32px;
+      height: 32px;
+    }
+  }
+
+  .dropzone-button {
+    > #dropzone-label {
+      padding: 15vw;
+
+      > div {
+        top: 50%;
+
+        span {
+          font-size: 28px;
+        }
+      }
+    }
   }
 }
 
@@ -270,43 +337,58 @@
   }
 }
 
+@media (max-width: 768px) {
+  .document-container,
+  .dropzone-button {
+    width: 35vw;
+    height: auto;
+    padding: 0.6em;
+  }
+}
+
 @media (width < 576px) {
   .files-manipulation__container {
     max-width: 460px;
   }
-}
 
-@media (max-width: 1440px) {
-  .preview-container {
-    gap: 8px;
-  }
+  .dropzone-button {
+    > #dropzone-label {
+      padding: 15vw;
 
-  .document-container {
-    .react-pdf__Document {
-      padding: 1em;
-    }
-    .actions-container {
-      left: 1em;
-      top: 1em;
-      width: 32px;
-      height: 32px;
+      > div {
+        top: 50%;
+        span {
+          font-size: 20px;
+        }
+      }
     }
   }
 }
 
-@media (max-width: 1023px) {
-  .document-container {
-    width: 25vw;
+@media (max-width: 480px) {
+  .dropzone-button {
+    > #dropzone-label {
+      padding: 15vw;
+
+      > div {
+        top: 50%;
+
+        img {
+          height: 2em;
+          width: 2em;
+        }
+
+        span {
+          font-size: 16px;
+        }
+      }
+    }
   }
 }
-@media (max-width: 768px) {
-  .document-container {
-    width: 35vw;
-    height: auto;
-  }
-  .document-container {
-    .react-pdf__Document {
-      padding: 0.6em;
-    }
+
+@media (max-width: 370px) {
+  .document-container,
+  .dropzone-button {
+    width: 40vw;
   }
 }
