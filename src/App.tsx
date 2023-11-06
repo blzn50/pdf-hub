@@ -13,9 +13,9 @@ import { arrayMove } from '@dnd-kit/sortable';
 import { PDFDocument } from 'pdf-lib';
 import { pdfjs } from 'react-pdf';
 
+import { Action } from 'components/Action';
 import { Dropzone } from 'components/Dropzone';
 import { Preview } from 'components/Preview';
-import { Button } from 'components/tokens/Button';
 
 import { objectId } from 'helpers/function';
 
@@ -36,7 +36,9 @@ const measuringStrategy = {
 
 function App() {
   const [files, setFiles] = useState<CustomFile[]>([]);
-  const [downloadLink, setDownloadLink] = useState<DownloadLink | null>(null);
+  const [downloadLink, setDownloadLink] = useState<DownloadLink | undefined>(
+    undefined,
+  );
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -54,7 +56,7 @@ function App() {
         id: objectId(),
       })),
     ]);
-    setDownloadLink(null);
+    setDownloadLink(undefined);
   }, []);
 
   const handleRearrangeFiles = useCallback(
@@ -73,7 +75,7 @@ function App() {
 
   const handleRemoveFile = (idToRemove: string) => {
     setFiles((oldFiles) => oldFiles.filter((file) => file.id !== idToRemove));
-    setDownloadLink(null);
+    setDownloadLink(undefined);
   };
 
   const saveMergedPdf = useCallback(
@@ -143,42 +145,7 @@ function App() {
               </Preview>
             </DndContext>
           </section>
-
-          <section className="handle-btns">
-            <Button
-              className="btn merge-btn"
-              /**
-               * This can also be fixed adding rule in `.eslintrc` file
-               *
-               * ```
-               * {
-               *  "@typescript-eslint/no-misused-promises": [
-               *    "error",
-               *    {
-               *      "checksVoidReturn": false
-               *   }
-               *  ]
-               * }
-               * ```
-               *
-               * Link: https://typescript-eslint.io/rules/no-misused-promises/
-               */
-              onClick={() => {
-                void (async () => await processPdfMerge())();
-              }}
-            >
-              Process files
-            </Button>
-            <a
-              type="button"
-              className={`btn download-btn ${
-                !downloadLink?.href ? 'disabled-btn' : ''
-              }`}
-              {...downloadLink}
-            >
-              Download
-            </a>
-          </section>
+          <Action downloadLink={downloadLink} onClick={processPdfMerge} />
         </>
       )}
     </main>

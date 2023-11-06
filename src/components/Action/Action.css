@@ -1,0 +1,48 @@
+.handle-btns {
+  min-width: 60%;
+  padding: 16px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+
+  .btn {
+    width: 200px;
+    height: 54px;
+    font-size: 24px;
+    margin: 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .merge-btn {
+    background-color: purple;
+    &:hover {
+      background-color: rgba(128, 0, 128, 0.9);
+    }
+  }
+
+  .download-btn {
+    background-color: teal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    &:hover {
+      background-color: rgba(0, 128, 128, 0.9);
+    }
+  }
+
+  .disabled-btn {
+    pointer-events: none;
+    background-color: #f4e3c2;
+    color: #c1c1c1;
+  }
+}
+
+@media (width < 576px) {
+  .handle-btns {
+    flex-direction: column;
+  }
+}
