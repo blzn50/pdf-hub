@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { lazy, Suspense, useCallback, useState } from 'react';
 
 import {
   DndContext,
@@ -10,12 +10,8 @@ import {
 } from '@dnd-kit/core';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { arrayMove } from '@dnd-kit/sortable';
-import { PDFDocument } from 'pdf-lib';
-import { pdfjs } from 'react-pdf';
 
 import { Dropzone } from 'components/Dropzone';
-import { Preview } from 'components/Preview';
-import { Button } from 'components/tokens/Button';
 
 import { objectId } from 'helpers/function';
 
@@ -23,20 +19,20 @@ import { CustomFile, DownloadLink } from 'types';
 
 import './App.css';
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url,
-).toString();
-
 const measuringStrategy = {
   droppable: {
     strategy: MeasuringStrategy.Always,
   },
 };
 
+const Preview = lazy(() => import('./components/Preview'));
+const Action = lazy(() => import('./components/Action'));
+
 function App() {
   const [files, setFiles] = useState<CustomFile[]>([]);
-  const [downloadLink, setDownloadLink] = useState<DownloadLink | null>(null);
+  const [downloadLink, setDownloadLink] = useState<DownloadLink | undefined>(
+    undefined,
+  );
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -54,7 +50,7 @@ function App() {
         id: objectId(),
       })),
     ]);
-    setDownloadLink(null);
+    setDownloadLink(undefined);
   }, []);
 
   const handleRearrangeFiles = useCallback(
@@ -73,61 +69,21 @@ function App() {
 
   const handleRemoveFile = (idToRemove: string) => {
     setFiles((oldFiles) => oldFiles.filter((file) => file.id !== idToRemove));
-    setDownloadLink(null);
+    setDownloadLink(undefined);
   };
-
-  const saveMergedPdf = useCallback(
-    (mergedFile: Uint8Array, filename: string) => {
-      const link = URL.createObjectURL(
-        new Blob([mergedFile], { type: 'application/pdf' }),
-      );
-      return { download: filename, href: link };
-    },
-    [],
-  );
-
-  const processPdfMerge = useCallback(async () => {
-    const mergePdf = await PDFDocument.create();
-
-    // convert files to arraybuffer
-    const arrayBufferList = files.map(
-      async (file) => await file.file.arrayBuffer(),
-    );
-
-    // copy all the pages and add to merge file
-    for (let index = 0; index < arrayBufferList.length; index++) {
-      const element = await arrayBufferList[index];
-      const pdfToMerge = await PDFDocument.load(element);
-
-      const copiedPages = await mergePdf.copyPages(
-        pdfToMerge,
-        pdfToMerge.getPageIndices(),
-      );
-
-      for (let index = 0; index < copiedPages.length; index++) {
-        const page = copiedPages[index];
-        mergePdf.addPage(page);
-      }
-    }
-
-    const mergedPdf = await mergePdf.save();
-    const saveInfo = saveMergedPdf(mergedPdf, 'merged-document.pdf');
-
-    setDownloadLink(saveInfo);
-  }, [files, saveMergedPdf]);
 
   return (
     <main className="pdf-merge">
       <h1 style={{ textAlign: 'center' }}>Merge PDF</h1>
-      {files.length === 0 && (
-        <Dropzone
-          onDrop={handleDragToDrop}
-          accept={{ 'application/pdf': ['.pdf'] }}
-        />
-      )}
-      {!!files.length && (
-        <>
-          <section className="files-manipulation__container">
+      <Suspense fallback={<>Loading...</>}>
+        {files.length === 0 && (
+          <Dropzone
+            onDrop={handleDragToDrop}
+            accept={{ 'application/pdf': ['.pdf'] }}
+          />
+        )}
+        {!!files.length && (
+          <>
             <DndContext
               onDragEnd={handleRearrangeFiles}
               sensors={sensors}
@@ -142,45 +98,14 @@ function App() {
                 />
               </Preview>
             </DndContext>
-          </section>
-
-          <section className="handle-btns">
-            <Button
-              className="btn merge-btn"
-              /**
-               * This can also be fixed adding rule in `.eslintrc` file
-               *
-               * ```
-               * {
-               *  "@typescript-eslint/no-misused-promises": [
-               *    "error",
-               *    {
-               *      "checksVoidReturn": false
-               *   }
-               *  ]
-               * }
-               * ```
-               *
-               * Link: https://typescript-eslint.io/rules/no-misused-promises/
-               */
-              onClick={() => {
-                void (async () => await processPdfMerge())();
-              }}
-            >
-              Process files
-            </Button>
-            <a
-              type="button"
-              className={`btn download-btn ${
-                !downloadLink?.href ? 'disabled-btn' : ''
-              }`}
-              {...downloadLink}
-            >
-              Download
-            </a>
-          </section>
-        </>
-      )}
+            <Action
+              files={files}
+              downloadLink={downloadLink}
+              onSetDownloadLink={setDownloadLink}
+            />
+          </>
+        )}
+      </Suspense>
     </main>
   );
 }
