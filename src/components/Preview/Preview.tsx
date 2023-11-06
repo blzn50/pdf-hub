@@ -30,14 +30,20 @@ export const Preview: FC<PreviewProps> = ({
   const fileIds = useMemo(() => files.map((file) => file.id), [files]);
 
   return (
-    <SortableContext items={fileIds}>
-      <div className="preview-container">
-        {files.map((file) => (
-          <SortableItem file={file} key={file.id} onFileRemove={onFileRemove} />
-        ))}
-        {children}
-      </div>
-    </SortableContext>
+    <section className="files-manipulation__container">
+      <SortableContext items={fileIds}>
+        <div className="preview-container">
+          {files.map((file) => (
+            <SortableItem
+              file={file}
+              key={file.id}
+              onFileRemove={onFileRemove}
+            />
+          ))}
+          {children}
+        </div>
+      </SortableContext>
+    </section>
   );
 };
 

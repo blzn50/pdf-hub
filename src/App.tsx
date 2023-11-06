@@ -84,22 +84,20 @@ function App() {
         )}
         {!!files.length && (
           <>
-            <section className="files-manipulation__container">
-              <DndContext
-                onDragEnd={handleRearrangeFiles}
-                sensors={sensors}
-                modifiers={[restrictToWindowEdges]}
-                measuring={measuringStrategy}
-              >
-                <Preview files={files} onFileRemove={handleRemoveFile}>
-                  <Dropzone
-                    withinFiles
-                    accept={{ 'application/pdf': ['.pdf'] }}
-                    onDrop={handleDragToDrop}
-                  />
-                </Preview>
-              </DndContext>
-            </section>
+            <DndContext
+              onDragEnd={handleRearrangeFiles}
+              sensors={sensors}
+              modifiers={[restrictToWindowEdges]}
+              measuring={measuringStrategy}
+            >
+              <Preview files={files} onFileRemove={handleRemoveFile}>
+                <Dropzone
+                  withinFiles
+                  accept={{ 'application/pdf': ['.pdf'] }}
+                  onDrop={handleDragToDrop}
+                />
+              </Preview>
+            </DndContext>
             <Action
               files={files}
               downloadLink={downloadLink}
