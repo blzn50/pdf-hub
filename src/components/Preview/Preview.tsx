@@ -8,6 +8,8 @@ import { CustomFile } from 'types';
 
 import { SortableItem } from './SortableItem';
 
+import './Preview.css';
+
 type PreviewProps = {
   files: CustomFile[];
   onFileRemove?: (id: string) => void;

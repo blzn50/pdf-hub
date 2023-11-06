@@ -1,0 +1,32 @@
+.preview-container {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #c5dfdf;
+}
+
+.preview-container .add-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (1024px < width <= 1440px) {
+  .preview-container {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .preview-container {
+    border: 3px dashed #316797;
+    border-radius: 0;
+    gap: 8px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}

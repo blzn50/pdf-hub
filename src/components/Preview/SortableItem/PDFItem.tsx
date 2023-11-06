@@ -5,6 +5,8 @@ import { Document, Page } from 'react-pdf';
 import loading from 'assets/loading.svg';
 import remove from 'assets/remove.svg';
 
+import './PDFItem.css';
+
 type PDFItemProps = {
   file?: File;
   isDragging?: boolean;
