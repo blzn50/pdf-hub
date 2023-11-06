@@ -1,3 +1,4 @@
+/* eslint no-use-before-define: 0 */
 import { createRequire } from 'node:module';
 import path from 'node:path';
 
