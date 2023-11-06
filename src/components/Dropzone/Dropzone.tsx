@@ -4,6 +4,8 @@ import { Accept, DropEvent, FileRejection, useDropzone } from 'react-dropzone';
 
 import plus from 'assets/plus.svg';
 
+import './Dropzone.css';
+
 type DropzoneProps = {
   accept?: Accept;
   withinFiles?: boolean;
