@@ -1,6 +1,7 @@
 import { FC, ReactNode, useMemo } from 'react';
 
 import { SortableContext } from '@dnd-kit/sortable';
+import { pdfjs } from 'react-pdf';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 import 'react-pdf/dist/esm/Page/TextLayer.css';
 
@@ -15,6 +16,11 @@ type PreviewProps = {
   onFileRemove?: (id: string) => void;
   children?: ReactNode;
 };
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  'pdfjs-dist/build/pdf.worker.min.js',
+  import.meta.url,
+).toString();
 
 export const Preview: FC<PreviewProps> = ({
   files,
@@ -34,3 +40,5 @@ export const Preview: FC<PreviewProps> = ({
     </SortableContext>
   );
 };
+
+export default Preview;
