@@ -13,47 +13,6 @@
   position: relative;
 }
 
-.handle-btns {
-  display: flex;
-  margin: 0 auto;
-  padding: 16px;
-  justify-content: space-around;
-
-  .btn {
-    width: 200px;
-    height: 54px;
-    font-size: 24px;
-    margin: 0 24px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  .merge-btn {
-    background-color: purple;
-    &:hover {
-      background-color: rgba(128, 0, 128, 0.9);
-    }
-  }
-
-  .download-btn {
-    background-color: teal;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    &:hover {
-      background-color: rgba(0, 128, 128, 0.9);
-    }
-  }
-
-  .disabled-btn {
-    pointer-events: none;
-    background-color: #f4e3c2;
-    color: #c1c1c1;
-  }
-}
-
 @media (1024px < width <= 1440px) {
   .files-manipulation__container {
     max-width: 1200px;
@@ -74,6 +33,6 @@
 
 @media (width < 576px) {
   .files-manipulation__container {
-    max-width: 460px;
+    max-width: 480px;
   }
 }
