@@ -10,6 +10,7 @@ import {
 } from '@dnd-kit/core';
 import { restrictToWindowEdges } from '@dnd-kit/modifiers';
 import { arrayMove } from '@dnd-kit/sortable';
+import { Analytics } from '@vercel/analytics/react';
 
 import { Dropzone } from 'components/Dropzone';
 
@@ -106,6 +107,7 @@ function App() {
           </>
         )}
       </Suspense>
+      <Analytics />
     </main>
   );
 }
