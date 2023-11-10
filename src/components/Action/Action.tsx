@@ -4,6 +4,8 @@ import { PDFDocument } from 'pdf-lib';
 
 import { Button } from 'components/tokens/Button';
 
+import { useStore } from 'stores';
+
 import { CustomFile, DownloadLink } from 'types';
 
 import './Action.css';
@@ -11,7 +13,7 @@ import './Action.css';
 type ActionProps = {
   files: CustomFile[];
   downloadLink?: DownloadLink;
-  onSetDownloadLink: (data: DownloadLink) => void;
+  onSetDownloadLink: (data: DownloadLink | undefined) => void;
 };
 
 export const Action: FC<ActionProps> = ({
@@ -19,6 +21,8 @@ export const Action: FC<ActionProps> = ({
   downloadLink,
   onSetDownloadLink,
 }) => {
+  const updateProgress = useStore((state) => state.updateProgress);
+
   const saveMergedPdf = useCallback(
     (mergedFile: Uint8Array, filename: string) => {
       const link = URL.createObjectURL(
@@ -30,12 +34,20 @@ export const Action: FC<ActionProps> = ({
   );
 
   const processPdfMerge = useCallback(async () => {
+    // clear the download button if files are already processed
+    onSetDownloadLink(undefined);
+
     const mergePdf = await PDFDocument.create();
+    let totalFilesByte = 0;
+    let totalProcessedByte = 0;
 
     // convert files to arraybuffer
-    const arrayBufferList = files.map(
-      async (file) => await file.file.arrayBuffer(),
-    );
+    const arrayBufferList = files.map(async ({ file }) => {
+      totalFilesByte += file.size;
+      return await file.arrayBuffer();
+    });
+
+    console.log({ totalFilesByte });
 
     // copy all the pages and add to merge file
     for (let index = 0; index < arrayBufferList.length; index++) {
@@ -51,13 +63,16 @@ export const Action: FC<ActionProps> = ({
         const page = copiedPages[index];
         mergePdf.addPage(page);
       }
+
+      totalProcessedByte += element.byteLength;
+      updateProgress(totalProcessedByte / totalFilesByte);
     }
 
     const mergedPdf = await mergePdf.save();
     const saveInfo = saveMergedPdf(mergedPdf, 'merged-document.pdf');
 
     onSetDownloadLink(saveInfo);
-  }, [files, onSetDownloadLink, saveMergedPdf]);
+  }, [files, onSetDownloadLink, saveMergedPdf, updateProgress]);
 
   return (
     <section className="handle-btns">
