@@ -1,0 +1,30 @@
+.progress-outer {
+  position: relative;
+  overflow: hidden;
+  height: 3em;
+  width: 100%;
+  background-color: #d1d4d7;
+  border-radius: 50px;
+
+  /* Fix overflow clipping in Safari */
+  /* https://gist.github.com/domske/b66047671c780a238b51c51ffde8d3a0 */
+  transform: translateZ(0);
+
+  .progress-inner {
+    transition: width 600ms ease-in-out;
+    background-image: linear-gradient(
+        -45deg,
+        transparent 33%,
+        rgba(0, 0, 0, 0.1) 33%,
+        rgba(0, 0, 0, 0.1) 66%,
+        transparent 66%
+      ),
+      linear-gradient(to top, rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.25)),
+      linear-gradient(to left, #09c, #f44);
+    height: 100%;
+    background-size:
+      6em 50px,
+      100% 100%,
+      100% 100%;
+  }
+}
