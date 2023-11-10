@@ -13,8 +13,11 @@ import { arrayMove } from '@dnd-kit/sortable';
 import { Analytics } from '@vercel/analytics/react';
 
 import { Dropzone } from 'components/Dropzone';
+import { ProgressBar } from 'components/tokens/ProgressBar';
 
 import { objectId } from 'helpers/function';
+
+import { useStore } from 'stores';
 
 import { CustomFile, DownloadLink } from 'types';
 
@@ -34,6 +37,9 @@ function App() {
   const [downloadLink, setDownloadLink] = useState<DownloadLink | undefined>(
     undefined,
   );
+
+  const progress = useStore((state) => state.progress);
+  const updateProgress = useStore((state) => state.updateProgress);
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -42,17 +48,21 @@ function App() {
     }),
   );
 
-  const handleDragToDrop = useCallback((acceptedFiles: File[]) => {
-    setFiles((prevFiles) => [
-      ...prevFiles,
-      ...acceptedFiles.map<CustomFile>((file) => ({
-        file: file,
-        uploadDate: Date.now(),
-        id: objectId(),
-      })),
-    ]);
-    setDownloadLink(undefined);
-  }, []);
+  const handleDragToDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      setFiles((prevFiles) => [
+        ...prevFiles,
+        ...acceptedFiles.map<CustomFile>((file) => ({
+          file: file,
+          uploadDate: Date.now(),
+          id: objectId(),
+        })),
+      ]);
+      setDownloadLink(undefined);
+      updateProgress(0);
+    },
+    [updateProgress],
+  );
 
   const handleRearrangeFiles = useCallback(
     (event: DragEndEvent) => {
@@ -63,14 +73,16 @@ function App() {
         setFiles((oldFiles) => {
           return arrayMove(oldFiles, oldIndex, newIndex);
         });
+        updateProgress(0);
       }
     },
-    [files],
+    [files, updateProgress],
   );
 
   const handleRemoveFile = (idToRemove: string) => {
     setFiles((oldFiles) => oldFiles.filter((file) => file.id !== idToRemove));
     setDownloadLink(undefined);
+    updateProgress(0);
   };
 
   return (
@@ -99,6 +111,11 @@ function App() {
                 />
               </Preview>
             </DndContext>
+
+            <section style={{ margin: '1em auto 0', width: '80%' }}>
+              <ProgressBar percent={progress} />
+            </section>
+
             <Action
               files={files}
               downloadLink={downloadLink}

@@ -3,7 +3,7 @@ function hex(value: number) {
 }
 
 /**
- * Psuedo MongoDB ObjectId generator
+ * Pseudo MongoDB ObjectId generator
  * @returns
  */
 export function objectId() {
