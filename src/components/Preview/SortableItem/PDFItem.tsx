@@ -32,8 +32,11 @@ export const PDFItem = forwardRef<HTMLDivElement, PDFItemProps>(
             file={file}
             options={options}
             loading={
-              <div className="">
-                <img src={loading} alt="loading" />
+              <div className="document-loading">
+                <img src={loading} alt="loading icon" />
+                <div className="document-label">
+                  <p> </p>
+                </div>
               </div>
             }
           >
