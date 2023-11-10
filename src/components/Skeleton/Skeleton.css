@@ -1,0 +1,43 @@
+.pdf-merge__skeleton {
+  display: flex;
+  gap: 3em;
+  flex-direction: column;
+
+  .files-container {
+    background-color: #dbdbdb;
+    height: 30vh;
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 12px;
+  }
+
+  .progressbar {
+    background-color: #dbdbdb;
+    height: 2.5em;
+    width: 80%;
+    margin: 0 auto;
+    border-radius: 50px;
+  }
+
+  .action-btns {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 60%;
+    margin: 0 auto;
+    gap: 24px;
+
+    .btn {
+      background-color: #dbdbdb;
+      width: 8em;
+      height: 3em;
+      border-radius: 16px;
+    }
+  }
+
+  @media (width < 576px) {
+    .action-btns {
+      flex-direction: column;
+    }
+  }
+}
