@@ -13,6 +13,7 @@ import { arrayMove } from '@dnd-kit/sortable';
 import { Analytics } from '@vercel/analytics/react';
 
 import { Dropzone } from 'components/Dropzone';
+import { PDFMergeSkeleton } from 'components/Skeleton';
 import { ProgressBar } from 'components/tokens/ProgressBar';
 
 import { objectId } from 'helpers/function';
@@ -88,7 +89,8 @@ function App() {
   return (
     <main className="pdf-merge">
       <h1 style={{ textAlign: 'center' }}>Merge PDF</h1>
-      <Suspense fallback={<>Loading...</>}>
+
+      <Suspense fallback={<PDFMergeSkeleton />}>
         {files.length === 0 && (
           <Dropzone
             onDrop={handleDragToDrop}
