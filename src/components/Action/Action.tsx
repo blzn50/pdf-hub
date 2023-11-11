@@ -47,8 +47,6 @@ export const Action: FC<ActionProps> = ({
       return await file.arrayBuffer();
     });
 
-    console.log({ totalFilesByte });
-
     // copy all the pages and add to merge file
     for (let index = 0; index < arrayBufferList.length; index++) {
       const element = await arrayBufferList[index];
