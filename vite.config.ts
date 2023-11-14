@@ -1,3 +1,4 @@
+/// <reference types="vitest"/>
 /* eslint no-use-before-define: 0 */
 import { createRequire } from 'node:module';
 import path from 'node:path';
@@ -49,5 +50,10 @@ export default defineConfig({
         },
       },
     },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './setupTest.ts',
   },
 });

@@ -22,11 +22,9 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": true,
-    "baseUrl": "./src"
-    // "paths": {
-    //   "components": ["./components/*"]
-    // }
+    "baseUrl": "./src",
+    "types": ["vite/client", "vitest/globals"]
   },
-  "include": ["src"],
+  "include": ["src", "setupTest.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
