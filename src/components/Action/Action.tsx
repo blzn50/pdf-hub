@@ -10,7 +10,7 @@ import { CustomFile, DownloadLink } from 'types';
 
 import './Action.css';
 
-type ActionProps = {
+export type ActionProps = {
   files: CustomFile[];
   downloadLink?: DownloadLink;
   onSetDownloadLink: (data: DownloadLink | undefined) => void;
@@ -34,6 +34,9 @@ export const Action: FC<ActionProps> = ({
   );
 
   const processPdfMerge = useCallback(async () => {
+    if (files.length === 0) {
+      return;
+    }
     // clear the download button if files are already processed
     onSetDownloadLink(undefined);
 
